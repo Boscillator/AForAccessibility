@@ -2,8 +2,6 @@ from google.cloud import speech_v1p1beta1
 from google.cloud.speech_v1 import enums
 import io
 import json
-​
-
 
 def parse_stt_results(response):
     res = []
@@ -22,7 +20,7 @@ def parse_stt_results(response):
 
 def stt_from_uri(storage_uri):
 
-    client = speech_v1p1beta1.SpeechClient()​
+    client = speech_v1p1beta1.SpeechClient()
 
     language_code = "en-US"
     enable_word_time_offsets = True
