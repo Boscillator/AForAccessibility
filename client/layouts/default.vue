@@ -1,6 +1,7 @@
 <template>
   <v-app light>
     <v-app-bar
+      color="blue"
       fixed
       app
     >
