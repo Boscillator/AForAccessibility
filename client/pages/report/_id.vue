@@ -1,5 +1,14 @@
 <template>
-  <div id="report-grid">
+  <v-progress-circular
+    class="loading"
+    v-if="!report"
+    indeterminate
+    color="blue"
+    size="200"
+    width="25"
+  />
+
+  <div v-else id="report-grid">
     <div
       class="report-section"
       :class="{wide: section.wide}"
@@ -13,13 +22,39 @@
 <script>
     import BigText from "../../components/BigText";
     import Lineplot from "../../components/Lineplot";
+
     export default {
         components: {Lineplot, BigText},
+        methods: {
+            async refreshReport() {
+                console.log("Refresh");
+                if (!this.report) {
+                    try {
+                        let reportRequest = await this.$axios.get(`/api/report/${this.$route.params.id}`);
+                        let report = await reportRequest.data;
+                        this.report = report;
+                    } catch {
+                        setTimeout(() => this.refreshReport(), 1000);
+                    }
+                }
+            }
+        },
+        create() {
+            if(!this.report) {
+                this.refreshReport();
+            }
+        },
         async asyncData({params, $axios}) {
-            let reportRequest = await $axios.get(`/api/report/${params.id}`);
-            let report = await reportRequest.data;
-            return {
-                report
+            try {
+                let reportRequest = await $axios.get(`/api/report/${params.id}`);
+                let report = await reportRequest.data;
+                return {
+                    report
+                }
+            } catch {
+                return {
+                    report: null
+                }
             }
         }
     }
@@ -36,6 +71,12 @@
     grid-row-gap: 25px;
     justify-items: center;
     align-items: center;
+  }
+
+  .loading {
+    margin: auto;
+    width: 200px;
+    display: block;
   }
 
   .report-section {
