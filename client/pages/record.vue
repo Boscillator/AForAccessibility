@@ -4,12 +4,17 @@
     justify-center
     align-center
   >
+    <Recorder />
   </v-layout>
 </template>
 
 <script>
+    import Recorder from '~/components/Recorder.vue'
     export default {
-        name: "record"
+        name: "record",
+        components: {
+            Recorder
+        }
     }
 </script>
 
