@@ -46,7 +46,9 @@ export default {
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  axios: {},
+  axios: {
+    baseURL: 'https://aad209f5-2f95-4733-b5e3-6e4e4d6b5afe.mock.pstmn.io'
+  },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module

@@ -98,7 +98,8 @@
                 this.recorder.stop().then(({blob, buffer}) => {
                     this.isRecording = false;
                     this.message = "Done Recording."
-                    Recorder.download(blob, 'my-audio-file');
+                    // Recorder.download(blob, 'my-audio-file');
+                    this.$emit('recordingDone', {blob});
                 });
             }
         },
