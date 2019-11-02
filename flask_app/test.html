@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        function test_upload() {
+            var data = new Object();
+            data.filename = "test_filename.txt";
+            data.filedata = btoa("testdata");
+            data.timestamp = Date.now();
+            $.post("http://localhost:5000/api/upload", data, function (resp) {
+                console.log(resp);
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <button type="button" onclick="test_upload()">Test Upload</button>
+</body>
+
+</html>
