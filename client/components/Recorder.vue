@@ -1,26 +1,39 @@
 <template>
-  <v-card>
-    <v-sparkline
-      ref="sparkline"
-      :value="renderedPowBuffer"
+  <v-card
+    class="mt-4 mx-auto"
+    width="75%"
+    max-width="800px"
+  >
+    <v-sheet
+      class="v-sheet--offset mx-auto sheet-padding"
       color="blue"
-      line-width="2"
-      auto-draw
-    />
+      elevation="12"
+      max-width="calc(100% - 32px)"
+    >
+      <v-sparkline
+        ref="sparkline"
+        :value="renderedPowBuffer"
+        color="white"
+        line-width="2"
+        auto-draw
+      />
+    </v-sheet>
     <v-card-title>
-      Recording
+      {{message}}
     </v-card-title>
     <v-card-actions>
+      <v-spacer></v-spacer>
       <v-btn
         v-if="!isRecording"
         @click="startRecording()"
-        color="red">
+        color="red"
+      >
         <v-icon>mdi-record</v-icon>
       </v-btn>
       <v-btn
         v-else
         @click="stopRecording()"
-        >
+      >
         <v-icon>mdi-stop</v-icon>
       </v-btn>
     </v-card-actions>
@@ -34,6 +47,7 @@
         name: "Recorder",
         data: function () {
             return {
+                message: "Ready To Record.",
                 bufferMaxPoints: 200,
                 bufferIndex: 0,
                 powBuffer: [],
@@ -45,9 +59,9 @@
         },
         methods: {
             onAnalysed(data) {
-                if(this.isRecording) {
+                if (this.isRecording) {
                     this.powBuffer.shift();
-                    this.powBuffer.push(data.data.reduce((a,b) => a+b));
+                    this.powBuffer.push(data.data.reduce((a, b) => a + b));
                 }
             },
             renderPowBuffer() {
@@ -77,11 +91,13 @@
             },
             _doStartRecording() {
                 this.recorder.start().then(() => this.isRecording = true);
+                this.message = "Recording..."
                 setInterval(() => this.renderPowBuffer(), 400);
             },
             stopRecording() {
                 this.recorder.stop().then(({blob, buffer}) => {
                     this.isRecording = false;
+                    this.message = "Done Recording."
                     Recorder.download(blob, 'my-audio-file');
                 });
             }
@@ -94,5 +110,7 @@
 </script>
 
 <style scoped>
-
+  .sheet-padding {
+    margin-top: 10px;
+  }
 </style>
