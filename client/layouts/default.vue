@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app light>
     <v-app-bar
       fixed
       app
