@@ -15,75 +15,11 @@
     import Lineplot from "../../components/Lineplot";
     export default {
         components: {Lineplot, BigText},
-        async asyncData({params}) {
+        async asyncData({params, $axios}) {
+            let reportRequest = await $axios.get(`/api/report/${params.id}`);
+            let report = await reportRequest.data;
             return {
-                report: [
-                    {
-                        "type": "highchart",
-                        "wide": "true",
-                        "title": "Words Per Minute",
-                        "options": {
-                            "series": [{
-                                "data": [1,2,3]
-                            }]
-                        }
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Clarity",
-                        "body": "B-"
-                    },
-                    {
-                        "type": "bigtext",
-                        "title": "Accessibility",
-                        "body": "C"
-                    },
-                ]
+                report
             }
         }
     }
