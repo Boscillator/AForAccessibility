@@ -20,7 +20,7 @@ def parse_stt_results(response):
     return res
 
 
-def stt_from_uri(storage_uri, sample_rate):
+def stt_from_uri(storage_uri, sample_rate, channels=2):
     try:
         client = speech_v1p1beta1.SpeechClient()
 
@@ -29,17 +29,17 @@ def stt_from_uri(storage_uri, sample_rate):
         sample_rate_hertz = sample_rate
         enable_automatic_punctuation = True
 
-        #enable_speaker_diarization = True
-        #diarization_speaker_count = 3
+        enable_speaker_diarization = True
+        diarization_speaker_count = 3
 
         config = {
-            #"enable_speaker_diarization": enable_speaker_diarization,
-            #"diarization_speaker_count": diarization_speaker_count,
+            "enable_speaker_diarization": enable_speaker_diarization,
+            "diarization_speaker_count": diarization_speaker_count,
             "enable_automatic_punctuation": enable_automatic_punctuation,
             "enable_word_time_offsets": enable_word_time_offsets,
             "language_code": language_code,
             "sample_rate_hertz": sample_rate_hertz,
-            "audio_channel_count": 2
+            "audio_channel_count": channels
         }
 
         audio = {"uri": storage_uri}
