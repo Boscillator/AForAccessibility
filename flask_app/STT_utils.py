@@ -2,6 +2,8 @@ from google.cloud import speech_v1p1beta1
 from google.cloud.speech_v1 import enums
 import io
 import json
+import traceback
+
 
 def parse_stt_results(response):
     res = []
@@ -18,32 +20,35 @@ def parse_stt_results(response):
     return res
 
 
-def stt_from_uri(storage_uri):
+def stt_from_uri(storage_uri, sample_rate):
+    try:
+        client = speech_v1p1beta1.SpeechClient()
 
-    client = speech_v1p1beta1.SpeechClient()
+        language_code = "en-US"
+        enable_word_time_offsets = True
+        sample_rate_hertz = sample_rate
+        enable_automatic_punctuation = True
 
-    language_code = "en-US"
-    enable_word_time_offsets = True
-    sample_rate_hertz = 16000
-    enable_automatic_punctuation = True
+        #enable_speaker_diarization = True
+        #diarization_speaker_count = 3
 
-    enable_speaker_diarization = True
-    diarization_speaker_count = 3
+        config = {
+            #"enable_speaker_diarization": enable_speaker_diarization,
+            #"diarization_speaker_count": diarization_speaker_count,
+            "enable_automatic_punctuation": enable_automatic_punctuation,
+            "enable_word_time_offsets": enable_word_time_offsets,
+            "language_code": language_code,
+            "sample_rate_hertz": sample_rate_hertz,
+            "audio_channel_count": 2
+        }
 
-    config = {
-        "enable_speaker_diarization": enable_speaker_diarization,
-        "diarization_speaker_count": diarization_speaker_count,
-        "enable_automatic_punctuation": enable_automatic_punctuation,
-        "enable_word_time_offsets": enable_word_time_offsets,
-        "language_code": language_code,
-        "sample_rate_hertz": sample_rate_hertz
-    }
+        audio = {"uri": storage_uri}
 
-    audio = {"uri": storage_uri}
+        operation = client.long_running_recognize(config, audio)
+        response = operation.result()
 
-    operation = client.long_running_recognize(config, audio)
-    response = operation.result()
+        odata = parse_stt_results(response)
 
-    odata = parse_stt_results(response)
-
-    return odata
+        return odata
+    except Exception as e:
+        traceback.print_exc()
