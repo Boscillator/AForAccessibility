@@ -47,7 +47,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://localhost:5000'
+    baseURL: 'https://aforaccessibility.appspot.com'
   },
   /*
   ** vuetify module configuration

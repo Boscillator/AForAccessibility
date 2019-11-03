@@ -59,7 +59,7 @@
                   'filename': this.name,
                   'filedata': base64,
                   'timestamp': new Date() / 1000
-              }).then(() => this.dialog = false)
+              }).then((resp) => this.$router.push(`/report/${resp.data.uid}`))
 
             }
         },

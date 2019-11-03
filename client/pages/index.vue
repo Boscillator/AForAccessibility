@@ -10,11 +10,11 @@
     >
       <v-list-item
         v-for="report in reports"
-        :key="report.id"
-        @click="go(report.id)"
+        :key="report.uid"
+        @click="go(report.uid)"
       >
         <v-list-item-content>
-          <v-list-item-title>{{report.name}}</v-list-item-title>
+          <v-list-item-title>{{report.filename}}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-avatar>
           <v-icon>mdi-exit-to-app</v-icon>
