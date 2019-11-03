@@ -1,5 +1,11 @@
 from statistics import mode
 
+def check_punc(word):
+    for i in word:
+        if i in ".?!":
+            return True
+    return False
+
 def sec_from_word(word):
     return word["startTimeSeconds"] + (word["startTimeNanos"] / 10**9)
 
