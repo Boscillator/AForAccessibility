@@ -16,7 +16,7 @@ def get_avg_wpm(wpm):
         data = np.array(wpm[speaker])
         wpm_list.append(np.mean(data[:,1]))
     avg_wpm = sum(wpm_list) / len(wpm_list)
-    return {"type": "bigtext", "title": "Avg WPM", "body": avg_wpm}
+    return {"type": "bigtext", "title": "Avg WPM", "body": '{}'.format(int(avg_wpm)), "wide": False}
 
 def reformat_theme(data, type_id, title):
     return {"type": type_id, "wide": "true", "title": title, "options": data}
@@ -52,10 +52,10 @@ def data_analysis(data):
 
     try:
         wpm_data = words_per_minute(data)
-        ret.append(get_avg_wpm(wpm_data))
         wpm = get_line_chart_json(wpm_data, title='Words per minute',
                                   y_label='Words per minute', x_label='Time (s)')
         ret.append(reformat_theme(wpm, "highchart", "Words per Minute"))
+        ret.append(get_avg_wpm(wpm_data))
     except:
         traceback.print_exc()
 
