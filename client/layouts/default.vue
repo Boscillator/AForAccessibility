@@ -5,7 +5,9 @@
       fixed
       app
     >
-      <v-toolbar-title v-text="title"/>
+      <nuxt-link id="title" to="/">
+        <v-toolbar-title v-text="title"/>
+      </nuxt-link>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -29,3 +31,10 @@
         }
     }
 </script>
+
+<style scoped>
+  #title {
+    color: white;
+    text-decoration: none;
+  }
+</style>
