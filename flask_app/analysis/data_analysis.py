@@ -18,17 +18,17 @@ def get_avg_wpm(wpm):
         data = np.array(wpm[speaker])
         wpm_list.append(np.mean(data[:,1]))
     avg_wpm = sum(wpm_list) / len(wpm_list)
-    return {"type": "bigtext", "title": "Avg WPM", "body": '{}'.format(int(avg_wpm)), "wide": False}
+    return {"type": "bigtext", "title": "Avg WPM", "body": '{}'.format(int(avg_wpm)), "wide": False, "tip": "Word comprehension begins to gradually decline above speeds of 150 wpm, and completely falls off above 250 wpm. We recommend you keep your average wpm below 150 wpm!"}
 
 def get_tot_comp(comp):
-    return {"type": "bigtext", "title": "Total Complexity", "body": '{}'.format(comp), "wide": False}
+    return {"type": "bigtext", "title": "Total Complexity", "body": '{}'.format(comp), "wide": False, "tip": "Student readability is maximized between the complexity values of 5 and 14. Anything greater than this range will result in a drop of overall understanding of your lecture!"}
 
 def get_tot_pauses(wpm, threshold=5):
     pauses = 0
     for speaker in wpm:
         data = np.array(wpm[speaker])[:, 1]
         pauses += len(data[data <= threshold])
-    return {"type": "bigtext", "title": "Total Pauses", "body": '{}'.format(pauses), "wide": False}
+    return {"type": "bigtext", "title": "Total Pauses", "body": '{}'.format(pauses), "wide": False, "tip": "Pauses break up a lecture, giving students time to gather their thoughts and notes. We encourage you to take more pauses the longer your lecture is!"}
 
 def reformat_theme(data, type_id, title):
     return {"type": type_id, "wide": "true", "title": title, "options": data}
@@ -88,9 +88,9 @@ def data_analysis(data):
 
     return ret
 
-# if __name__ == "__main__":
-#     with open('../../../accessibility/analysis/data/Useful_Idiots_Sanders_Interview.json') as json_file:
-#         data = json.load(json_file)
+if __name__ == "__main__":
+    with open('../../../accessibility/analysis/data/Useful_Idiots_Sanders_Interview.json') as json_file:
+        data = json.load(json_file)
 
-#     test = data_analysis(data)
-#     print(test)
+    test = data_analysis(data)
+    print(test)
