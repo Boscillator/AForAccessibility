@@ -9,7 +9,6 @@ import numpy as np
 import six
 
 import json
-import nltk
 
 from itertools import zip_longest
 

@@ -1,7 +1,33 @@
-import nltk
 from statistics import mode
 
-nltk.data.path.append("./nltk_data")
+def sec_from_word(word):
+    return word["startTimeSeconds"] + (word["startTimeNanos"] / 10**9)
+
+def format_times(data):
+    sentences = []
+    times = []
+    for section in data:
+        if len(section["transcript"]) > 0:
+            sentence = ""
+            time = []
+            for row in section["words"]:
+                word = row["word"]
+                if not check_punc(word):
+                    sentence = sentence + " " + word
+                    time.append(sec_from_word(row))
+                else:
+                    sentence = sentence + " " + word
+                    time.append(sec_from_word(row))
+                    sentences.append(sentence.strip())
+                    times.append(time[-1] - time[0])
+                    sentence = ""
+                    time = []
+
+            if len(time) > 0:
+                sentences.append(sentence.strip())
+                times.append(time[-1] - time[0])
+
+    return sentences, times
 
 def sentence_by_speaker(data):
     """
@@ -14,12 +40,8 @@ def sentence_by_speaker(data):
         A list of dictionaries which contain the sentence and its speaker. 
     """
     
-    transcript = ''
-    for i in range(len(data)):
-        transcript += data[i]['transcript']
-    
-    sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
-    sentences = sent_detector.tokenize(transcript.strip())
+    sentences, times = format_times(data)
+
     sentence_by_speaker = [0]*len(sentences) 
     
     s = 0

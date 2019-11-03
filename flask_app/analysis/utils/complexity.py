@@ -1,4 +1,3 @@
-import nltk
 import string
 import json
 import re
