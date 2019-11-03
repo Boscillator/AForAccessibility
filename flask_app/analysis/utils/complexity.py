@@ -11,6 +11,25 @@ def check_punc(word):
             return True
     return False
 
+def tot_complexity(data):
+    transcript = ""
+    for row in data:
+        if len(row["transcript"]) > 0:
+            transcript = transcript + " " + row["transcript"]
+
+    sentences, time_range = format_times(data)
+
+    words = transcript.split(" ")
+
+    sent_count = len(sentences)
+    word_count = len(words)
+
+    filtered_text = re.sub(r'[^\w\s]', '', transcript)
+    filtered_text = filtered_text.replace(" ", "").lower()
+    character_count = len(filtered_text)
+
+    return dale_chall_score(word_count, sent_count, character_count)
+
 def format_times(data):
     sentences = []
     times = []
@@ -69,4 +88,4 @@ def complexity(data, window=30):
             t_temp = 0
             t_transcript = ""
 
-    return comp
+    return comp, tot_complexity(data)
