@@ -5,11 +5,12 @@
     <v-sheet
       class="v-sheet--offset mx-auto sheet-padding big-text"
       elevation="0"
-      height="100%"
+      height="85%"
       max-width="calc(100% - 32px)"
     >
       {{section.body}}
     </v-sheet>
+    <div v-if="section.tip" class="tip">{{section.tip}}</div>
     <v-card-title class="title">{{section.title}}</v-card-title>
   </v-card>
 </template>
@@ -35,6 +36,11 @@
   .title {
     position: absolute;
     bottom: 0px;
+  }
+  .tip {
+    position: absolute;
+    bottom: 32pt;
+    padding-left: 15px;
   }
   .big-text {
     font-size: 75px;
