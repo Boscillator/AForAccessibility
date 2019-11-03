@@ -1,3 +1,4 @@
 flask_app/secrets.yaml
 flask_app/dist
 !flask_app/dist/.gitkeep
+*/__pycache__/*
