@@ -13,6 +13,8 @@ import traceback
 def get_avg_wpm(wpm):
     wpm_list = []
     for speaker in wpm:
+        if len(wpm) < 2:
+            continue
         data = np.array(wpm[speaker])
         wpm_list.append(np.mean(data[:,1]))
     avg_wpm = sum(wpm_list) / len(wpm_list)
@@ -55,6 +57,7 @@ def data_analysis(data):
     except:
         traceback.print_exc()
 
+    wpm_data = None
     try:
         wpm_data = words_per_minute(data)
         wpm = get_line_chart_json(wpm_data, title='Words per minute',
@@ -68,6 +71,7 @@ def data_analysis(data):
         comp = get_complexity_line_chart(complexity(data), title='Complexity over time',
                                          y_label='Complexity', x_label='Time (s)')
         ret.append(reformat_theme(comp, "highchart", "Complexity"))
+        ret.append(get_tot_pauses(wpm_data))
     except:
         traceback.print_exc()
         
