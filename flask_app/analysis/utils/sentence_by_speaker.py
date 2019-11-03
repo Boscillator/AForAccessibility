@@ -1,6 +1,8 @@
 import nltk
 from statistics import mode
 
+nltk.data.path.append("./nltk_data")
+
 def sentence_by_speaker(data):
     """
     Return transcript as pairs of sentences and their speakers.

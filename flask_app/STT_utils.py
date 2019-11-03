@@ -30,7 +30,7 @@ def stt_from_uri(storage_uri, sample_rate, channels=2):
         enable_automatic_punctuation = True
 
         enable_speaker_diarization = True
-        diarization_speaker_count = 2
+        diarization_speaker_count = 3
 
         config = {
             "enable_speaker_diarization": enable_speaker_diarization,

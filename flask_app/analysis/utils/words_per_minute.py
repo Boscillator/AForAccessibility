@@ -27,10 +27,10 @@ def words_per_minute(data, pause_thresh=10**10, window=10**10):
     # windows per minute
     win_per_min = 60 / window
 
-    #print(data)
+    # print(data)
 
     all_words = data[-1]["words"]
-    #for item in data:
+    # for item in data:
     #    all_words += item["words"]
 
     all_speakers = set([w["speakerTag"] for w in all_words])
@@ -45,6 +45,8 @@ def words_per_minute(data, pause_thresh=10**10, window=10**10):
             word_time = sec_from_word(next_word)
             time_diff = word_time - sec_from_word(queue[0])
             while time_diff > window and len(queue) != 0:
+                if len(queue) == 1:
+                    out[s].append([sec_from_word(queue[0])+window, 0])
                 queue = queue[1:]
                 if len(queue) == 0:
                     break

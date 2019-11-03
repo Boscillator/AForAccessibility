@@ -11,6 +11,9 @@ import traceback
 def reformat_theme(data, type_id, title):
     return {"type": type_id, "wide": "true", "title": title, "options": data}
 
+def reformat_pie(data, type_id, title):
+    return {"type": type_id, "wide": False, "title": title, "options": data}
+
 
 def reformat_transcript(data, type_id, title):
     return {"type": type_id, "wide": "true", "title": title, "body": data}
@@ -34,8 +37,14 @@ def data_analysis(data):
         traceback.print_exc()
 
     try:
+        tc = topic_cohesion(data)
+        ret.append(reformat_pie(tc, "highchart", "Topic Focus"))
+    except:
+        traceback.print_exc()
+
+    try:
         wpm = get_line_chart_json(words_per_minute(data), title='Words per minute',
-                                  y_label='Words per minute', x_label='Time (min)')
+                                  y_label='Words per minute', x_label='Time (s)')
         ret.append(reformat_theme(wpm, "highchart", "Words per Minute"))
     except:
         traceback.print_exc()
@@ -44,12 +53,6 @@ def data_analysis(data):
         comp = get_complexity_line_chart(complexity(data), title='Complexity over time',
                                          y_label='Complexity', x_label='Time (s)')
         ret.append(reformat_theme(comp, "highchart", "Complexity"))
-    except:
-        traceback.print_exc()
-
-    try:
-        tc = topic_cohesion(data)
-        ret.append(reformat_theme(tc, "highchart", "Topic Focus"))
     except:
         traceback.print_exc()
 
