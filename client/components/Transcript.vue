@@ -8,7 +8,12 @@
       height="100%"
       max-width="calc(100% - 32px)"
     >
-      {{section.body}}
+      <!--{{section.body}}-->
+      <div v-for="item in section.body">
+        <h3>Speaker #{{item.key}}</h3>
+        {{item.sentence}}
+        <br>
+      </div>
     </v-sheet>
     <v-card-title class="title">{{section.title}}</v-card-title>
   </v-card>
@@ -36,6 +41,7 @@
   .title {
     position: absolute;
     bottom: 0px;
+    padding-bottom: 10px;
   }
 
   .transcript {
