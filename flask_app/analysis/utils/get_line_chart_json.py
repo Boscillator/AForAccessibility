@@ -14,8 +14,8 @@ def get_line_chart_json(data, title, y_label, x_label = 'Time (minutes)'):
                        'plotOptions': {},
                        'series':[]}
     i = 1                                              
-    for line in data:
-        temp_dict = {'data':line, 'name':f'Speaker {i}'}
+    for speaker in data:
+        temp_dict = {'data':data[speaker], 'name':f'Speaker {i}'}
         line_chart_json['series'].append(temp_dict)
         i+= 1
     

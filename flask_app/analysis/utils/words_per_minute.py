@@ -1,3 +1,9 @@
+
+
+def sec_from_word(word):
+    return word["startTimeSeconds"] + (word["startTimeNanos"] / 10**9)
+
+
 def words_per_minute(data, pause_thresh=10**10, window=10**10):
     """
     Calculate the words per minute for a given text.
@@ -8,43 +14,42 @@ def words_per_minute(data, pause_thresh=10**10, window=10**10):
             pause.
         window: the time resolution at which the instantaneous words per minute
             is calculated.
-      
+
     Returns:
         out: A dictionary where the key is the speaker id. The value of each
             dictionary contains a list of dictionaries where each dictionary
             represents a segment where the speaker was speaking without 
             pausing. Each dictionary contains various metrics for that segment. 
     """
-    print(data)
-    out = {}  
-    for word in data[-1]['words']:
-        if word['speakerTag'] not in out:
-            out[word['speakerTag']] = [{'first':-1, 'last':0, 'words':0, 
-               'wpm':0, 'i_wpm':[0], 'steps':[0]}]
-        if ((word['startTimeSeconds']*10**9 + word['startTimeNanos'] 
-        - out[word['speakerTag']][-1]['last']) > pause_thresh) and (out[word['speakerTag']][-1]['first'] != -1):
-            out[word['speakerTag']].append({'first':-1, 'last':0, 'words':0, 
-               'wpm':0, 'i_wpm':[0], 'steps':[0]})
-        if out[word['speakerTag']][-1]['first'] == -1:
-            out[word['speakerTag']][-1]['first'] = word['startTimeSeconds']*10**9 + word['startTimeNanos']
-        out[word['speakerTag']][-1]['last'] = word['endTimeSeconds']*10**9 + word['endTimeNanos']
-        out[word['speakerTag']][-1]['words'] += 1
-        
-        out[word['speakerTag']][-1]['steps'][-1] += ((word['endTimeSeconds']*10**9 + word['endTimeNanos']) - 
-           (word['startTimeSeconds']*10**9 + word['startTimeNanos']))
-        out[word['speakerTag']][-1]['i_wpm'][-1] += 1
-        if out[word['speakerTag']][-1]['steps'][-1] > window:
-            out[word['speakerTag']][-1]['i_wpm'][-1] = (out[word['speakerTag']][-1]['i_wpm'][-1]/
-               (out[word['speakerTag']][-1]['steps'][-1]/(60*10**9)))
-            out[word['speakerTag']][-1]['steps'][-1] = word['endTimeSeconds']*10**9 + word['endTimeNanos']
-            out[word['speakerTag']][-1]['steps'].append(0)
-            out[word['speakerTag']][-1]['i_wpm'].append(0)
-    for speaker in out:
-        for temp in out[speaker]:
-            temp['wpm'] = temp['words']/((temp['last'] - temp['first'])/(60*10**9))
-            temp['steps'].pop()
-            temp['i_wpm'].pop()
-    
-    print(out)
-            
+
+    pause_thresh = pause_thresh / 10**9
+    window = window / 10**9
+    # windows per minute
+    win_per_min = 60 / window
+
+    #print(data)
+
+    all_words = data[-1]["words"]
+    #for item in data:
+    #    all_words += item["words"]
+
+    all_speakers = set([w["speakerTag"] for w in all_words])
+    out = {}
+    for s in all_speakers:
+        words = sorted([w for w in all_words if w["speakerTag"] == s],
+                       key=lambda x: x["startTimeSeconds"] + x["startTimeNanos"] / 10**9)
+        out[s] = []
+        queue = [words[0]]
+        for i in range(1, len(words)):
+            next_word = words[i]
+            word_time = sec_from_word(next_word)
+            time_diff = word_time - sec_from_word(queue[0])
+            while time_diff > window and len(queue) != 0:
+                queue = queue[1:]
+                if len(queue) == 0:
+                    break
+                time_diff = word_time - sec_from_word(queue[0])
+            queue.append(next_word)
+            out[s].append([word_time, len(queue) * win_per_min])
+
     return out

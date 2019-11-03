@@ -29,12 +29,12 @@ def stt_from_uri(storage_uri, sample_rate, channels=2):
         sample_rate_hertz = sample_rate
         enable_automatic_punctuation = True
 
-        #enable_speaker_diarization = True
-        #diarization_speaker_count = 3
+        enable_speaker_diarization = True
+        diarization_speaker_count = 2
 
         config = {
-            #"enable_speaker_diarization": enable_speaker_diarization,
-            #"diarization_speaker_count": diarization_speaker_count,
+            "enable_speaker_diarization": enable_speaker_diarization,
+            "diarization_speaker_count": diarization_speaker_count,
             "enable_automatic_punctuation": enable_automatic_punctuation,
             "enable_word_time_offsets": enable_word_time_offsets,
             "language_code": language_code,
