@@ -20,6 +20,9 @@ def get_avg_wpm(wpm):
     avg_wpm = sum(wpm_list) / len(wpm_list)
     return {"type": "bigtext", "title": "Avg WPM", "body": '{}'.format(int(avg_wpm)), "wide": False}
 
+def get_tot_comp(comp):
+    return {"type": "bigtext", "title": "Total Complexity", "body": '{}'.format(comp), "wide": False}
+
 def get_tot_pauses(wpm, threshold=5):
     pauses = 0
     for speaker in wpm:
@@ -68,10 +71,12 @@ def data_analysis(data):
         traceback.print_exc()
 
     try:
-        comp = get_complexity_line_chart(complexity(data), title='Complexity over time',
+        comp_data, tot_comp = complexity(data)
+        comp = get_complexity_line_chart(comp_data, title='Complexity over time',
                                          y_label='Complexity', x_label='Time (s)')
         ret.append(reformat_theme(comp, "highchart", "Complexity"))
         ret.append(get_tot_pauses(wpm_data))
+        ret.append(get_tot_comp(tot_comp))
     except:
         traceback.print_exc()
         
