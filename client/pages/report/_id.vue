@@ -41,8 +41,8 @@
                 }
             }
         },
-        create() {
-            if(!this.report) {
+        mounted() {
+            if(this.report == null) {
                 this.refreshReport();
             }
         },
@@ -86,8 +86,10 @@
     height: 100%;
   }
 
-  .wide {
-    grid-column: 1/span 2;
+  @media (min-width: 720px) {
+    .wide {
+      grid-column: 1/span 2;
+    }
   }
 
   @media (max-width: 720px) {
