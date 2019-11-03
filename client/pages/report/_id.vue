@@ -14,6 +14,7 @@
       :class="{wide: section.wide}"
       v-for="section in report">
       <BigText :section="section" v-if="section.type == 'bigtext'" :key="section.title"/>
+      <Transcript :section="section" v-if="section.type == 'transcript'" :key="section.title"/>
       <Lineplot :section="section" v-if="section.type == 'highchart'" :key="section.title"/>
     </div>
   </div>
@@ -22,9 +23,10 @@
 <script>
     import BigText from "../../components/BigText";
     import Lineplot from "../../components/Lineplot";
+    import Transcript from "../../components/Transcript";
 
     export default {
-        components: {Lineplot, BigText},
+        components: {Lineplot, BigText, Transcript},
         methods: {
             async refreshReport() {
                 console.log("Refresh");
