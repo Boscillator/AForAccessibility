@@ -147,7 +147,7 @@ def generate_pie_chart(times, categories):
 
     theme = {
             "chart": {
-                "plotBackgroundColor": "null",
+                "plotBackgroundColor": "#ffffff",
                 "plotBorderWidth": "null",
                 "plotShadow": "false",
                 "type": 'pie'
