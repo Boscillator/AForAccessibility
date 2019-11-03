@@ -20,3 +20,23 @@ def get_line_chart_json(data, title, y_label, x_label = 'Time (minutes)'):
         i+= 1
     
     return line_chart_json
+
+def get_complexity_line_chart(data, title, y_label, x_label = 'Time (minutes)'):
+    """
+    Copy of get_line_chart_json but works for complexity since it got fucked up
+    """
+        
+    line_chart_json = {'chart':{'type':'spline'},
+                       'title': {'text': title},
+                       'xAxis':{'title': {'text': x_label}},
+                       'yAxis':{'title': {'text': y_label}},
+                       'legend': {'symbolWidth': 80},
+                       'plotOptions': {},
+                       'series':[]}
+
+    series_data = {}
+    series_data["name"] = "Complexity"
+    series_data["data"] = data
+    line_chart_json["series"] = [series_data]
+    
+    return line_chart_json

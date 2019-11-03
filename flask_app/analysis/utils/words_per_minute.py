@@ -15,6 +15,7 @@ def words_per_minute(data, pause_thresh=10**10, window=10**10):
             represents a segment where the speaker was speaking without 
             pausing. Each dictionary contains various metrics for that segment. 
     """
+    print(data)
     out = {}  
     for word in data[-1]['words']:
         if word['speakerTag'] not in out:
@@ -43,5 +44,7 @@ def words_per_minute(data, pause_thresh=10**10, window=10**10):
             temp['wpm'] = temp['words']/((temp['last'] - temp['first'])/(60*10**9))
             temp['steps'].pop()
             temp['i_wpm'].pop()
+    
+    print(out)
             
     return out

@@ -27,7 +27,10 @@ def sentence_by_speaker(data):
             if word['word'] in sentences[s]:
                 speakers.append(word['speakerTag'])
             else:
-                sentence_by_speaker[s] = mode(speakers)
+                if speakers == []:
+                    sentence_by_speaker[s] = 0
+                else:
+                    sentence_by_speaker[s] = mode(speakers)
                 speakers = []
                 s += 1
     return [dict(zip(['sentence', 'key'], i)) for i in list(zip(sentences, 
