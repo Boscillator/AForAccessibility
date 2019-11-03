@@ -9,7 +9,7 @@
 
     <v-dialog v-model="dialog" persistent max-width="290">
       <v-card>
-        <v-card-title class="headline">Use Google's location service?</v-card-title>
+        <v-card-title class="headline">Title Lecture</v-card-title>
         <v-card-text>
           <v-text-field
             v-model="name"
