@@ -41,6 +41,7 @@
   .title {
     position: absolute;
     bottom: 0px;
+    padding-bottom: 10px;
   }
 
   .transcript {
