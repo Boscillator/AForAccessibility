@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 import json
@@ -127,6 +127,19 @@ def hello_world():
     with open("./test.html", "r") as fp:
         result = "".join(fp.readlines())
         return result
+
+@app.route('/')
+def index():
+    return client('')
+
+@app.route('/<path:p>')
+def client(p):
+    print(p)
+    _, ext = os.path.splitext(p)
+    if ext == "":
+        p = os.path.join(p, 'index.html')
+    print("PATH: ", p)
+    return send_from_directory('dist', p)
 
 
 if __name__ == "__main__":

@@ -72,11 +72,15 @@ export default {
   /*
   ** Build configuration
   */
+  generate: {
+    dir: '../flask_app/dist'
+  },
   build: {
     /*
     ** You can extend webpack config here
     */
     extend(config, ctx) {
+      config.output.publicPath = './_nuxt/'
     }
   }
 }
