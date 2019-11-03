@@ -18,6 +18,13 @@ def get_avg_wpm(wpm):
     avg_wpm = sum(wpm_list) / len(wpm_list)
     return {"type": "bigtext", "title": "Avg WPM", "body": '{}'.format(int(avg_wpm)), "wide": False}
 
+def get_tot_pauses(wpm, threshold=5):
+    pauses = 0
+    for speaker in wpm:
+        data = np.array(wpm[speaker])[:, 1]
+        pauses += len(data[data <= threshold])
+    return {"type": "bigtext", "title": "Total Pauses", "body": '{}'.format(pauses), "wide": False}
+
 def reformat_theme(data, type_id, title):
     return {"type": type_id, "wide": "true", "title": title, "options": data}
 
@@ -30,10 +37,8 @@ def reformat_transcript(data, type_id, title):
 def data_analysis(data):
     """
     Run the various metrics on the transcript.
-
     Args:
         data: A dictionary containing raw speech to text data.
-
     """
 
     ret = []
