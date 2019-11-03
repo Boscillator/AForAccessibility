@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 import json
@@ -39,14 +39,21 @@ def upload_file(uid, filename, filedata, timestamp):
         decoded = base64.b64decode(filedata)
         filedata = io.BytesIO(decoded)
         gcs_uri = get_uri_from_file(uid + ".wav", filedata)
+        print("Uploaded file to GCS")
         sample_rate = 16000
+        channels = 2
         filedata.seek(0)
         with wave.open(filedata) as fp:
             sample_rate = fp.getframerate()
+            channels = fp.getnchannels()
         stt_uri = "gs://aforaccessibility/" + uid + ".wav"
-        stt_data = stt_from_uri(stt_uri, sample_rate)
+        print("Extracted wave file characteristics")
+        stt_data = stt_from_uri(stt_uri, sample_rate, channels=channels)
+        print("Finished STT analysis")
+        #print(stt_data)
 
         report = process_report(stt_data)
+        print("Completed post-STT analysis")
 
         db = get_mongo_db()
         post = {
@@ -74,7 +81,7 @@ def allowed_file(filename):
 
 
 uid_str_options = string.ascii_lowercase + \
-    string.ascii_lowercase + string.digits
+    string.ascii_uppercase + string.digits
 
 
 def make_uid():
@@ -84,6 +91,10 @@ def make_uid():
 @app.route('/api/upload', methods=['POST'])
 def api_receive_upload():
     post_data = request.json
+    if post_data == None:
+        post_data = request.form
+    if post_data == None:
+        return json.dumps({"status": "failure", "message": "No valid message body received"}), 400
     if "filename" not in post_data \
             or "filedata" not in post_data \
             or "timestamp" not in post_data:
@@ -127,6 +138,19 @@ def hello_world():
     with open("./test.html", "r") as fp:
         result = "".join(fp.readlines())
         return result
+
+@app.route('/')
+def index():
+    return client('')
+
+@app.route('/<path:p>')
+def client(p):
+    print(p)
+    _, ext = os.path.splitext(p)
+    if ext == "":
+        p = os.path.join(p, 'index.html')
+    print("PATH: ", p)
+    return send_from_directory('dist', p)
 
 
 if __name__ == "__main__":
